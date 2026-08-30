@@ -63,4 +63,8 @@ mgkernel.bin: linker.ld $(objects)
 # 依赖于：mgkernel.bin（如果 mgkernel.bin 没生成，会先触发编译）
 # 作用：以 root 权限将生成的 mgkernel.bin 复制到系统的 /boot/ 目录下，供引导程序（如 GRUB）读取。
 install: mgkernel.bin
-		sudo cp $< /boot/mgkernel.bin
+		cp $< /boot/mgkernel.bin
+
+run: mgkernel.bin
+		(killall qemu-system-i386 && sleep 1) || true
+		qemu-system-i386 -kernel /boot/mgkernel.bin &

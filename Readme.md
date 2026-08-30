@@ -14,4 +14,4 @@
         make mgkernel.bin
         make install
     3.2 运行
-        qemu-system-i386 -kernel /boot/mgkernel.bin
+        make run

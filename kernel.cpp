@@ -1,4 +1,6 @@
 
+#include "types.h"
+
 /***********************************************************************************************
 * 没有操作系统、没有C标准库（libc）的裸机环境下，向VGA显存写入字符
 * 在32位x86保护模式下，物理内存地址 0xB8000 是 VGA 文本模式的显存映射起始地址（显示 80 列 × 25 行字符）
@@ -7,7 +9,7 @@
 * 低8位(0x00FF)，存放字符的 ASCII 码
 ************************************************************************************************/
 void printf(char* s){
-    unsigned short* screenOut = (unsigned short*)0xb8000;
+    uint16_t* screenOut = (uint16_t*)0xb8000;
     for(int i=0; s[i] !='\0'; i++){
         // 保留显存中原本的颜色设置，仅将低 8 位替换为当前要输出的字符 ASCII 码，从而直接把文字绘制到屏幕上
         screenOut[i] = (screenOut[i] & 0xFF00) | s[i];
@@ -39,7 +41,7 @@ extern "C" void callConstructors(){
 * multiboot_structure：指向 Multiboot 信息结构体的指针（包含物理内存大小、命令行参数、驱动盘信息等）
 * magicnumber：Multiboot 的魔数（用于校验是否由规范的 bootloader 正确引导）
 *************************************************************************************************/
-extern "C" void mgKernelMain(void * multiboot_structure , unsigned int magicnumber){
+extern "C" void mgKernelMain(void * multiboot_structure , uint32_t magicnumber){
     printf("hello muge, Please complete your study of operating systems.\n");
     while(1);
 }
