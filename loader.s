@@ -29,7 +29,11 @@
  * 执行指令开始
  */
 .section .text
-.extern mgKernelMain ;// 声明外部函数
+/*
+ * 声明外部函数mgKernelMain,callConstructors
+ */
+.extern mgKernelMain ;
+.extern callConstructors ;
 .global loader ;// 全局标签loader，使外部GRUB可以找到启动入口
 
 // 启动点,调用内核代码
@@ -38,7 +42,8 @@ loader:
      * 将我们自己建的内存顶端地址($kernel_stack),放入cpu的堆栈指针寄存器(%esp)中
      * C++运行必须依赖“堆栈”（用来存临时变量和调用函数）,设置运行时必须的内存信息
      */
-    mov $kernel_stack, %esp 
+    mov $kernel_stack, %esp
+    call callConstructors; // 全局构造函数初始化处理
     /*
      * 把寄存器 %eax 和 %ebx 里的数据压入刚刚建好的堆栈里
      * 电脑启动时，GRUB会把“内存大小”和“硬件信息”存在这两个寄存器里，所以将它们push进堆栈传给C++的函数
@@ -46,11 +51,11 @@ loader:
     push %eax
     push %ebx
     /*
-     * 调用c++内核函数，正式进入c++部分，离开汇编
-     * c++中函数应该是死循环(操作系统),正常情况下cpu一直留在c++的函数世界中
+     * 调用内核主函数，正式进入内核部分，离开汇编
+     * 内核函数应该是死循环(操作系统),正常情况下cpu一直被内核征用
      * 万一退出了函数，cpu就会进入下面_stop部分
      */
-    call mgKernelMain ;//c++函数调用，此时正式进入c++
+    call mgKernelMain ;//内核主函数调用，正式进入内核部分
 
 _stop:
     cli ;// 关闭所有硬件中断（键盘、鼠标、定时器都不来打扰cpu）
