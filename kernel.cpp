@@ -1,5 +1,6 @@
 
 #include "types.h"
+#include "gdt.h"
 
 /***********************************************************************************************
 * 没有操作系统、没有C标准库（libc）的裸机环境下，向VGA显存写入字符
@@ -43,5 +44,6 @@ extern "C" void callConstructors(){
 *************************************************************************************************/
 extern "C" void mgKernelMain(void * multiboot_structure , uint32_t magicnumber){
     printf("hello muge, Please complete your study of operating systems.\n");
+    GlobalDescriptorTable gdt;
     while(1);
 }

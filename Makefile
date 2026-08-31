@@ -30,7 +30,7 @@ ASPARAMS = --32
 LDPARAMS = -melf_i386
 
 # objects: 编译内核所需的所有目标文件列表
-objects = loader.o kernel.o
+objects = loader.o gdt.o kernel.o
 
 
 # ==========================================
