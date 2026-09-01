@@ -20,10 +20,10 @@ class GlobalDescriptorTable{
 
     } __attribute__((packed));
 
-    SegmentDescriptor nullSegmentDescriptor;
-    SegmentDescriptor unusedSegmentDescriptor;
-    SegmentDescriptor codeSegmentDescriptor;
-    SegmentDescriptor dataSegmentDescriptor;
+    SegmentDescriptor nullSegmentSelector;
+    SegmentDescriptor unusedSegmentSelector;
+    SegmentDescriptor codeSegmentSelector;
+    SegmentDescriptor dataSegmentSelector;
 
     public:
         GlobalDescriptorTable();
